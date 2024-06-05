@@ -55,9 +55,10 @@ const check_xss = (input) => {
         alert('패스워드는대소문자를1개이상포함해야합니다.');
         return false;
         }
-       
+
     console.log('이메일:', emailValue);
     console.log('비밀번호:', passwordValue);
+    session_set();
     loginForm.submit();
     };
     document.getElementById("login_btn").addEventListener('click', check_input);
@@ -78,7 +79,34 @@ const check_xss = (input) => {
          const idsave_check = document.getElementById('idSaveCheck');
          let get_id = getCookie("id");
          if(get_id) {
-         emailInput.value = get_id;
-         idsave_check.checked = true;
+            emailInput.value = get_id;
+            idsave_check.checked = true;
+            }
+            session_check(); // 세션 유무 검사
          }
+         
+
+         function session_set() { //세션 저장
+            let session_id = document.querySelector("#typeEmailX");
+            if (sessionStorage) {
+                sessionStorage.setItem("Session_Storage_test", session_id.value);
+            } else {
+                alert("로컬 스토리지 지원 x");
+                }
          }
+
+         function session_get(){ //세션 읽기
+            if (sessionStorage) {
+                return sessionStorage.getItem("Session_Storage_test");
+                } else {
+                alert("세션 스토리지 지원 x");
+                }
+         }
+
+         function session_check() { //세션 검사
+            if (sessionStorage.getItem("Session_Storage_test")) {
+             alert("이미 로그인 되었습니다.");
+             location.href='../login/index_login.html'; // 로그인된 페이지로 이동
+            }
+        }
+        
